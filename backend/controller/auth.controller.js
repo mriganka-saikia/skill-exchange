@@ -38,3 +38,38 @@ const login = async (req, res) => {
 };
 
 module.exports = { register, login };
+
+const getProfile = async (req, res) => {
+    const { userId } = req.headers;
+    try {
+        const user = await userModel.findById(userId).select("-password");
+        if (!user) return res.status(404).send({ message: "User not found" });
+        res.status(200).send({ message: "Profile fetched successfully", user });
+    } catch (error) {
+        res.status(500).send({ message: "Internal server error", error: error.message });
+    }
+};
+
+const updateProfile = async (req, res) => {
+    const { userId } = req.headers;
+    const { fullName, phoneNumber, bio, location, role } = req.body;
+    try {
+        const user = await userModel.findById(userId);
+        if (!user) return res.status(404).send({ message: "User not found" });
+
+        if (fullName !== undefined) user.fullName = fullName;
+        if (phoneNumber !== undefined) user.phoneNumber = phoneNumber;
+        if (bio !== undefined) user.bio = bio;
+        if (location !== undefined) user.location = location;
+        if (Array.isArray(role) && role.length) user.role = role;
+
+        await user.save();
+        const safeUser = user.toObject();
+        delete safeUser.password;
+        res.status(200).send({ message: "Profile updated successfully", user: safeUser });
+    } catch (error) {
+        res.status(500).send({ message: "Internal server error", error: error.message });
+    }
+};
+
+module.exports = { register, login, getProfile, updateProfile };
