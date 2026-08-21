@@ -1,7 +1,7 @@
 const { skillModel } = require("../model/skill.model");
 const { reviewModel } = require("../model/review.model");
 
-// GET /api/skills - public browse, only approved + active listings, with filters
+
 const getSkills = async (req, res) => {
     const { category, search, page = 1, limit = 9 } = req.query;
 
@@ -39,7 +39,7 @@ const getSkills = async (req, res) => {
     }
 };
 
-// GET /api/skills/mine - listings created by the logged-in helper (any status)
+
 const getMySkills = async (req, res) => {
     const { userId } = req.headers;
     try {
@@ -50,7 +50,7 @@ const getMySkills = async (req, res) => {
     }
 };
 
-// GET /api/skills/:id
+
 const getSkillById = async (req, res) => {
     try {
         const skill = await skillModel
@@ -65,7 +65,7 @@ const getSkillById = async (req, res) => {
     }
 };
 
-// POST /api/skills - helper creates a listing, goes in as "pending"
+
 const createSkill = async (req, res) => {
     const { userId } = req.headers;
     const { title, description, category, tags, rateAmount, rateUnit, availability, images } = req.body;
@@ -95,7 +95,7 @@ const createSkill = async (req, res) => {
     }
 };
 
-// PUT /api/skills/:id - owner only, edits reset status to pending for re-review
+
 const updateSkill = async (req, res) => {
     const { userId } = req.headers;
     const { title, description, category, tags, rateAmount, rateUnit, availability, images, isActive } = req.body;
@@ -119,7 +119,7 @@ const updateSkill = async (req, res) => {
         if (images !== undefined) skill.images = images;
         if (isActive !== undefined) skill.isActive = isActive;
 
-        // any content edit sends it back through admin verification
+        
         skill.status = "pending";
         await skill.save();
 
@@ -129,7 +129,7 @@ const updateSkill = async (req, res) => {
     }
 };
 
-// DELETE /api/skills/:id - owner or admin
+
 const deleteSkill = async (req, res) => {
     const { userId } = req.headers;
 
@@ -149,7 +149,7 @@ const deleteSkill = async (req, res) => {
     }
 };
 
-// GET /api/skills/:id/reviews
+
 const getSkillReviews = async (req, res) => {
     try {
         const reviews = await reviewModel
