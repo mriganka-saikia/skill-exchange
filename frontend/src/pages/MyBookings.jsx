@@ -1,0 +1,51 @@
+import { useEffect, useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
+import { Box, HStack, Heading, Skeleton, Text, VStack } from "@chakra-ui/react";
+import BookingStatusBadge from "@/components/BookingStatusBadge";
+import { getMyBookingsApi } from "@/api/bookings";
+
+const MyBookings = () => {
+    const [bookings, setBookings] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        getMyBookingsApi()
+            .then((res) => setBookings(res.data.bookings))
+            .finally(() => setLoading(false));
+    }, []);
+
+    return (
+        <Box className="app-main" py={10}>
+            <Heading fontFamily="var(--font-display)" size="xl" mb={8}>My bookings</Heading>
+
+            {loading ? (
+                <VStack gap={3} align="stretch">{[...Array(3)].map((_, i) => <Skeleton key={i} height="70px" borderRadius="8px" />)}</VStack>
+            ) : bookings.length === 0 ? (
+                <Box textAlign="center" py={16} border="1px dashed var(--line)" borderRadius="10px">
+                    <Text fontFamily="var(--font-display)" fontSize="lg" mb={1}>No bookings yet</Text>
+                    <Text color="var(--ink-soft)" fontSize="sm">
+                        <RouterLink to="/browse" style={{ color: "var(--teal)" }}>Browse skills</RouterLink> to request your first session.
+                    </Text>
+                </Box>
+            ) : (
+                <VStack gap={3} align="stretch">
+                    {bookings.map((b) => (
+                        <RouterLink key={b._id} to={`/bookings/${b._id}`} style={{ textDecoration: "none" }}>
+                            <Box border="1px solid var(--line)" borderRadius="8px" p={4} bg="var(--paper-raised)">
+                                <HStack justify="space-between">
+                                    <Box>
+                                        <Text fontWeight="600">{b.skill?.title}</Text>
+                                        <Text fontSize="sm" color="var(--ink-soft)">with {b.helper?.fullName}</Text>
+                                    </Box>
+                                    <BookingStatusBadge status={b.status} />
+                                </HStack>
+                            </Box>
+                        </RouterLink>
+                    ))}
+                </VStack>
+            )}
+        </Box>
+    );
+};
+
+export default MyBookings;
