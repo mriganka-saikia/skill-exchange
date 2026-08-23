@@ -4,6 +4,8 @@ import { Box, Button, Field, Heading, Input, NativeSelect, Text, Textarea, VStac
 import { CATEGORIES } from "@/components/FilterDrawer";
 import { createSkillApi, updateSkillApi, getSkillByIdApi } from "@/api/skills";
 import { toaster } from "@/components/ui/toaster";
+import { generateDescriptionApi } from "@/api/ai";
+
 
 const EMPTY = {
     title: "",
@@ -22,6 +24,7 @@ const SkillForm = () => {
     const [form, setForm] = useState(EMPTY);
     const [loading, setLoading] = useState(isEdit);
     const [saving, setSaving] = useState(false);
+    const [generating, setGenerating] = useState(false);
     const [errors, setErrors] = useState({});
 
     useEffect(() => {
@@ -54,6 +57,22 @@ const SkillForm = () => {
         setErrors(e);
         return Object.keys(e).length === 0;
     };
+    
+    const handleAiGenerate = async () => {
+    if (!form.title.trim()) {
+        toaster.create({ title: "Add a title first", description: "AI needs a title to write a description.", type: "warning" });
+        return;
+    }
+    setGenerating(true);
+    try {
+        const res = await generateDescriptionApi({ title: form.title, category: form.category });
+        setForm((f) => ({ ...f, description: res.data.output }));
+    } catch (err) {
+        toaster.create({ title: "AI generation failed", description: err.response?.data?.message, type: "error" });
+    } finally {
+        setGenerating(false);
+    }
+};
 
     const handleSubmit = async (evt) => {
         evt.preventDefault();
@@ -102,9 +121,14 @@ const SkillForm = () => {
                     </Field.Root>
 
                     <Field.Root invalid={!!errors.description}>
-                        <Field.Label>Description</Field.Label>
-                        <Textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} rows={4} />
-                        {errors.description && <Field.ErrorText>{errors.description}</Field.ErrorText>}
+                        <Box display="flex" alignItems="center" justifyContent="space-between">
+        <                   Field.Label>Description</Field.Label>
+                                <Button size="xs" variant="outline" loading={generating} onClick={handleAiGenerate}>
+                                    ✨ Generate with AI
+                                </Button>
+                        </Box>
+                            <Textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} rows={4} />
+                                {errors.description && <Field.ErrorText>{errors.description}</Field.ErrorText>}
                     </Field.Root>
 
                     <Field.Root invalid={!!errors.category}>

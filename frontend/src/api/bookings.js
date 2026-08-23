@@ -1,4 +1,4 @@
-import axiosInstance from "./axiosInstance";
+import axiosInstance from "../axiosinstance";
 
 export const getMyBookingsApi = () => axiosInstance.get("/bookings/mine");
 export const getIncomingBookingsApi = () => axiosInstance.get("/bookings/incoming");

@@ -1,7 +1,6 @@
 const { bookingModel } = require("../model/booking.model");
 const { skillModel } = require("../model/skill.model");
 
-// POST /api/skills/:id/book - seeker books a helper's skill
 const createBooking = async (req, res) => {
     const { userId } = req.headers;
     const { message, scheduledDate } = req.body;
@@ -31,7 +30,6 @@ const createBooking = async (req, res) => {
     }
 };
 
-// GET /api/bookings/mine - bookings I made as a seeker
 const getMyBookings = async (req, res) => {
     const { userId } = req.headers;
     try {
@@ -46,7 +44,7 @@ const getMyBookings = async (req, res) => {
     }
 };
 
-// GET /api/bookings/incoming - booking requests I receive as a helper
+
 const getIncomingBookings = async (req, res) => {
     const { userId } = req.headers;
     try {
@@ -61,7 +59,6 @@ const getIncomingBookings = async (req, res) => {
     }
 };
 
-// GET /api/bookings/:id
 const getBookingById = async (req, res) => {
     const { userId } = req.headers;
     try {
@@ -86,7 +83,7 @@ const getBookingById = async (req, res) => {
     }
 };
 
-// PUT /api/bookings/:id - general edit (message / scheduledDate), seeker only, before the helper responds
+
 const updateBooking = async (req, res) => {
     const { userId } = req.headers;
     const { message, scheduledDate } = req.body;

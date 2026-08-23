@@ -1,5 +1,5 @@
 const { reviewModel } = require("../model/review.model");
-const { bookingModel } = require("../model/booking.model"); // B's Day 5 model
+const { bookingModel } = require("../model/booking.model");
 const { userModel } = require("../model/user.model");
 
 const createReview = async (req, res) => {

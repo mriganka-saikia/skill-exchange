@@ -1,4 +1,4 @@
-import axiosInstance from "./axiosInstance";
+import axiosInstance from "../axiosinstance";
 
 export const getSkillsApi = (params) => axiosInstance.get("/skills", { params });
 export const getMySkillsApi = () => axiosInstance.get("/skills/mine");

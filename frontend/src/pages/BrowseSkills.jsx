@@ -4,7 +4,7 @@ import { LuSlidersHorizontal } from "react-icons/lu";
 import SkillCard from "@/components/SkillCard";
 import PaginationComp from "@/components/PaginationComp";
 import FilterDrawer from "@/components/FilterDrawer";
-import { getSkillsApi } from "@/api/skills";
+import { getSkillsApi } from "@/api/Skills";
 
 const BrowseSkills = () => {
     const [skills, setSkills] = useState([]);

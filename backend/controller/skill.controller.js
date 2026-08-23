@@ -1,7 +1,6 @@
 const { skillModel } = require("../model/skill.model");
 const { reviewModel } = require("../model/review.model");
 
-
 const getSkills = async (req, res) => {
     const { category, search, page = 1, limit = 9 } = req.query;
 
