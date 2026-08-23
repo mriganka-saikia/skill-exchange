@@ -1,5 +1,6 @@
 const { bookingModel } = require("../model/booking.model");
 const { skillModel } = require("../model/skill.model");
+const { getIO } = require("../config/socket");
 
 const createBooking = async (req, res) => {
     const { userId } = req.headers;
@@ -23,6 +24,8 @@ const createBooking = async (req, res) => {
             status: "requested",
         });
         await booking.save();
+        getIO().to(String(skill.helper)).emit("booking:new", { bookingId: booking._id, skillTitle: skill.title });
+        getIO().to(String(skill.helper)).emit("bookings:refresh");
 
         res.status(201).send({ message: "Booking request sent", booking });
     } catch (error) {
@@ -111,12 +114,12 @@ const updateBooking = async (req, res) => {
 };
 
 const ALLOWED_TRANSITIONS = {
-    // who is allowed to move a booking from one status to the next
+ 
     requested: { accepted: "helper", declined: "helper", cancelled: "seeker" },
     accepted: { completed: "helper", cancelled: "seeker" },
 };
 
-// PUT /api/bookings/:id - status transitions, enforced both by role and by current status
+
 const updateBookingStatus = async (req, res) => {
     const { userId } = req.headers;
     const { status } = req.body;
@@ -140,8 +143,12 @@ const updateBookingStatus = async (req, res) => {
 
         booking.status = status;
         await booking.save();
+        const recipient = String(booking.seeker) === String(userId) ? booking.helper : booking.seeker;
+        getIO().to(String(booking.seeker)).emit("bookings:refresh");
+        getIO().to(String(booking.helper)).emit("bookings:refresh");
+        getIO().to(String(recipient)).emit("booking:updated", { bookingId: booking._id, status });
 
-        // bump the helper's session count once a booking is genuinely completed
+        
         if (status === "completed") {
             const { userModel } = require("../model/user.model");
             await userModel.findByIdAndUpdate(booking.helper, { $inc: { sessionsCompleted: 1 } });

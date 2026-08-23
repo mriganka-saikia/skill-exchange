@@ -2,11 +2,32 @@ import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { Box, Button, HStack, Text } from "@chakra-ui/react";
 import { ColorModeButton } from "@/components/ui/color-mode";
 import { useAuth } from "@/context/AuthContext";
+import { useEffect } from "react";
+import { getSocket } from "@/lib/socket";
+import { toaster } from "@/components/ui/toaster";
 
 const Header = () => {
     const { user, logout } = useAuth();
     const navigate = useNavigate();
+    useEffect(() => {
+    const socket = getSocket();
+    if (!socket) return;
 
+    const onNewBooking = (data) => {
+        toaster.create({ title: "New booking request", description: data.skillTitle, type: "info" });
+    };
+    const onUpdated = (data) => {
+        toaster.create({ title: "Booking updated", description: `Status: ${data.status}`, type: "info" });
+    };
+
+    socket.on("booking:new", onNewBooking);
+    socket.on("booking:updated", onUpdated);
+
+    return () => {
+        socket.off("booking:new", onNewBooking);
+        socket.off("booking:updated", onUpdated);
+    };
+}, [user]);
     const handleLogout = () => {
         logout();
         navigate("/");

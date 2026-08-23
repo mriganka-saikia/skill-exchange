@@ -13,6 +13,17 @@
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
 }
 
+html.dark {
+  --ink: #f3ede0;
+  --ink-soft: #c9c0ac;
+  --paper: #1c1a16;
+  --paper-raised: #262319;
+  --gold: #d9a839;
+  --gold-deep: #f0bb4a;
+  --teal: #4a9384;
+  --rust: #d0704a;
+  --line: #3a362c;
+}
 * {
   box-sizing: border-box;
 }
@@ -38,7 +49,7 @@ body {
   padding: 0 24px;
 }
 
-/* ticket-stub signature card */
+
 .ticket {
   position: relative;
   display: flex;

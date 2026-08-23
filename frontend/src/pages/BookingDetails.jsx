@@ -7,6 +7,8 @@ import { useAuth } from "@/context/AuthContext";
 import { toaster } from "@/components/ui/toaster";
 import BookingStatusBadge from "@/components/BookingStatusBadge";
 import StarRating from "@/components/StarRating";
+import { getSocket } from "@/lib/socket";
+import ChatPanel from "@/components/ChatPanel";
 
 const STEPS = ["requested", "accepted", "completed"];
 
@@ -59,6 +61,13 @@ const BookingDetails = () => {
     };
 
     useEffect(() => { load(); }, [id]);
+    useEffect(() => {
+        const socket = getSocket();
+        if (!socket) return;
+
+        socket.on("bookings:refresh", load);
+        return () => socket.off("bookings:refresh", load);
+    }, [id]);
 
     const changeStatus = async (status) => {
         setBusy(true);
@@ -158,6 +167,7 @@ const BookingDetails = () => {
                     </form>
                 </Box>
             )}
+            <ChatPanel bookingId={id} />
         </Box>
     );
 };

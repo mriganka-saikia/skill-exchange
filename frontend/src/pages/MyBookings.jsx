@@ -3,15 +3,26 @@ import { Link as RouterLink } from "react-router-dom";
 import { Box, HStack, Heading, Skeleton, Text, VStack } from "@chakra-ui/react";
 import BookingStatusBadge from "@/components/BookingStatusBadge";
 import { getMyBookingsApi } from "@/api/bookings";
+import { getSocket } from "@/lib/socket";
 
 const MyBookings = () => {
     const [bookings, setBookings] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
+    const load = () => {
         getMyBookingsApi()
             .then((res) => setBookings(res.data.bookings))
             .finally(() => setLoading(false));
+    };
+
+    useEffect(() => {
+        load();
+
+        const socket = getSocket();
+        if (!socket) return;
+
+        socket.on("bookings:refresh", load);
+        return () => socket.off("bookings:refresh", load);
     }, []);
 
     return (
