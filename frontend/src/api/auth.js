@@ -1,11 +1,7 @@
-import axios from "axios";
+import axiosInstance from "./axiosInstance";
 
-const axiosInstance = axios.create({ baseURL: import.meta.env.VITE_API_URL || "http://localhost:8000/api" });
 
-axiosInstance.interceptors.request.use((config) => {
-    const token = localStorage.getItem("token");
-    if (token) config.headers.Authorization = token;
-    return config;
-});
-
-export default axiosInstance;
+export const loginApi = (data) => axiosInstance.post("/auth/login", data);
+export const registerApi = (data) => axiosInstance.post("/auth/register", data);
+export const getProfileApi = () => axiosInstance.get("/auth/profile");
+export const updateProfileApi = (data) => axiosInstance.put("/auth/profile", data);

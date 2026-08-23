@@ -1,4 +1,4 @@
-import axiosInstance from "../axiosinstance";
+import axiosInstance from "./axiosInstance";
 
 export const getAllUsersApi = (params) => axiosInstance.get("/admin/users", { params });
 export const getPendingSkillsApi = () => axiosInstance.get("/admin/skills/pending");
