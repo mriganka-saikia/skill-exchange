@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link as RouterLink } from "react-router-dom";
-import { Box, Button, CheckboxGroup, Checkbox, Field, HStack, Heading, Input, Text, VStack } from "@chakra-ui/react";
+import { Box, Button, Checkbox, Field, HStack, Heading, Input, Text, VStack } from "@chakra-ui/react";
 import { registerApi } from "@/api/auth";
 import { toaster } from "@/components/ui/toaster";
 
@@ -45,7 +45,7 @@ const Register = () => {
     return (
         <Box className="app-main" maxW="440px" py={12}>
             <Heading fontFamily="var(--font-display)" size="lg" mb={1}>Create your account</Heading>
-            <Text color="var(--ink-soft)" mb={8} fontSize="sm">Join as a helper, a seeker, or both.</Text>
+            <Text color="var(--ink-soft)" mb={8} fontSize="sm">Join as a helper, a seeker, choose your role</Text>
 
             <form onSubmit={handleSubmit}>
                 <VStack gap={4} align="stretch">
@@ -73,24 +73,40 @@ const Register = () => {
                         {errors.phoneNumber && <Field.ErrorText>{errors.phoneNumber}</Field.ErrorText>}
                     </Field.Root>
 
-                    <Field.Root invalid={!!errors.role}>
-                        <Field.Label>I want to</Field.Label>
-                        <CheckboxGroup value={role} onValueChange={setRole}>
-                            <HStack gap={5}>
-                                <Checkbox.Root value="seeker">
-                                    <Checkbox.HiddenInput />
-                                    <Checkbox.Control />
-                                    <Checkbox.Label>Find help (seeker)</Checkbox.Label>
-                                </Checkbox.Root>
-                                <Checkbox.Root value="helper">
-                                    <Checkbox.HiddenInput />
-                                    <Checkbox.Control />
-                                    <Checkbox.Label>Offer help (helper)</Checkbox.Label>
-                                </Checkbox.Root>
-                            </HStack>
-                        </CheckboxGroup>
-                        {errors.role && <Field.ErrorText>{errors.role}</Field.ErrorText>}
-                    </Field.Root>
+<Field.Root invalid={!!errors.role}>
+  <Field.Label>I want to</Field.Label>
+
+  <HStack gap={5}>
+    <label className="role-option">
+      <input
+        type="radio"
+        name="role"
+        value="seeker"
+        checked={role[0] === "seeker"}
+        onChange={() => setRole(["seeker"])}
+      />
+      <span className="custom-radio"></span>
+      <span>Find help (seeker)</span>
+    </label>
+
+    <label className="role-option">
+      <input
+        type="radio"
+        name="role"
+        value="helper"
+        checked={role[0] === "helper"}
+        onChange={() => setRole(["helper"])}
+      />
+      <span className="custom-radio"></span>
+      <span>Offer help (helper)</span>
+    </label>
+  </HStack>
+
+  {errors.role && (
+    <Field.ErrorText>{errors.role}</Field.ErrorText>
+  )}
+</Field.Root>
+                        
 
                     <Button type="submit" loading={loading} bg="var(--gold)" color="white" _hover={{ bg: "var(--gold-deep)" }} mt={2}>
                         Create account

@@ -111,3 +111,47 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .ticket { transition: none; }
 }
+
+.role-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  color: var(--ink);
+  font-size: 14px;
+  user-select: none;
+}
+
+.role-option input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.custom-radio {
+  width: 17px;
+  height: 17px;
+  border: 2px solid var(--line);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--paper-raised);
+  transition: all 0.15s ease;
+}
+
+.role-option input:checked + .custom-radio {
+  border-color: var(--gold);
+}
+
+.role-option input:checked + .custom-radio::after {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--gold);
+}
+
+.role-option:hover .custom-radio {
+  border-color: var(--gold);
+}
