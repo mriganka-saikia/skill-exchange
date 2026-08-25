@@ -112,7 +112,7 @@ body {
   .ticket { transition: none; }
 }
 
-.role-option {
+.register-role-option {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -122,29 +122,29 @@ body {
   user-select: none;
 }
 
-.role-option input {
+.register-role-option input {
   position: absolute;
   opacity: 0;
-  pointer-events: none;
+  width: 1px;
+  height: 1px;
 }
 
-.custom-radio {
+.register-radio {
   width: 17px;
   height: 17px;
-  border: 2px solid var(--line);
+  border: 1px solid var(--line);
   border-radius: 50%;
+  background: var(--paper-raised);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: var(--paper-raised);
-  transition: all 0.15s ease;
 }
 
-.role-option input:checked + .custom-radio {
+.register-role-option input:checked + .register-radio {
   border-color: var(--gold);
 }
 
-.role-option input:checked + .custom-radio::after {
+.register-role-option input:checked + .register-radio::after {
   content: "";
   width: 9px;
   height: 9px;
@@ -152,6 +152,49 @@ body {
   background: var(--gold);
 }
 
-.role-option:hover .custom-radio {
+.register-role-option:hover .register-radio {
+  border-color: var(--gold);
+}
+.profile-role-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  color: var(--ink);
+  font-size: 14px;
+  user-select: none;
+}
+
+.profile-role-option input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.profile-checkbox {
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  background: var(--paper-raised);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-role-option input:checked + .profile-checkbox {
+  background: var(--gold);
+  border-color: var(--gold);
+}
+
+.profile-role-option input:checked + .profile-checkbox::after {
+  content: "✓";
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.profile-role-option:hover .profile-checkbox {
   border-color: var(--gold);
 }

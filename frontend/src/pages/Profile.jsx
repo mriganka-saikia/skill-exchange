@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Box, Button, CheckboxGroup, Checkbox, Field, HStack, Heading, Input, Text, Textarea, VStack } from "@chakra-ui/react";
+import { Box, Button, Field, HStack, Heading, Input, Text, Textarea, VStack } from "@chakra-ui/react";
 import { useAuth } from "@/context/AuthContext";
 import { updateProfileApi } from "@/api/auth";
 import { toaster } from "@/components/ui/toaster";
@@ -59,23 +59,43 @@ const Profile = () => {
                         <Field.Label>Bio</Field.Label>
                         <Textarea value={form.bio} onChange={(e) => setForm({ ...form, bio: e.target.value })} rows={3} />
                     </Field.Root>
-                    <Field.Root>
-                        <Field.Label>Roles</Field.Label>
-                        <CheckboxGroup value={role} onValueChange={setRole}>
-                            <HStack gap={5}>
-                                <Checkbox.Root value="seeker">
-                                    <Checkbox.HiddenInput />
-                                    <Checkbox.Control />
-                                    <Checkbox.Label>Seeker</Checkbox.Label>
-                                </Checkbox.Root>
-                                <Checkbox.Root value="helper">
-                                    <Checkbox.HiddenInput />
-                                    <Checkbox.Control />
-                                    <Checkbox.Label>Helper</Checkbox.Label>
-                                </Checkbox.Root>
-                            </HStack>
-                        </CheckboxGroup>
-                    </Field.Root>
+               <Field.Root>
+    <Field.Label>Roles</Field.Label>
+
+    <HStack gap={5}>
+        <label className="profile-role-option">
+            <input
+                type="checkbox"
+                checked={role.includes("seeker")}
+                onChange={(e) => {
+                    setRole((current) =>
+                        e.target.checked
+                            ? [...new Set([...current, "seeker"])]
+                            : current.filter((r) => r !== "seeker")
+                    );
+                }}
+            />
+            <span className="profile-checkbox"></span>
+            <span>Seeker</span>
+        </label>
+
+        <label className="profile-role-option">
+            <input
+                type="checkbox"
+                checked={role.includes("helper")}
+                onChange={(e) => {
+                    setRole((current) =>
+                        e.target.checked
+                            ? [...new Set([...current, "helper"])]
+                            : current.filter((r) => r !== "helper")
+                    );
+                }}
+            />
+            <span className="profile-checkbox"></span>
+            <span>Helper</span>
+        </label>
+    </HStack>
+</Field.Root>
                     <Button type="submit" loading={saving} bg="var(--gold)" color="white" _hover={{ bg: "var(--gold-deep)" }} mt={2}>
                         Save changes
                     </Button>

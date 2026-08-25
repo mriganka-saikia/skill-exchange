@@ -74,37 +74,37 @@ const Register = () => {
                     </Field.Root>
 
 <Field.Root invalid={!!errors.role}>
-  <Field.Label>I want to</Field.Label>
+    <Field.Label>I want to</Field.Label>
 
-  <HStack gap={5}>
-    <label className="role-option">
-      <input
-        type="radio"
-        name="role"
-        value="seeker"
-        checked={role[0] === "seeker"}
-        onChange={() => setRole(["seeker"])}
-      />
-      <span className="custom-radio"></span>
-      <span>Find help (seeker)</span>
-    </label>
+    <HStack gap={5}>
+        <label className="register-role-option">
+            <input
+                type="radio"
+                name="register-role"
+                value="seeker"
+                checked={role[0] === "seeker"}
+                onChange={() => setRole(["seeker"])}
+            />
+            <span className="register-radio"></span>
+            <span>Find help (seeker)</span>
+        </label>
 
-    <label className="role-option">
-      <input
-        type="radio"
-        name="role"
-        value="helper"
-        checked={role[0] === "helper"}
-        onChange={() => setRole(["helper"])}
-      />
-      <span className="custom-radio"></span>
-      <span>Offer help (helper)</span>
-    </label>
-  </HStack>
+        <label className="register-role-option">
+            <input
+                type="radio"
+                name="register-role"
+                value="helper"
+                checked={role[0] === "helper"}
+                onChange={() => setRole(["helper"])}
+            />
+            <span className="register-radio"></span>
+            <span>Offer help (helper)</span>
+        </label>
+    </HStack>
 
-  {errors.role && (
-    <Field.ErrorText>{errors.role}</Field.ErrorText>
-  )}
+    {errors.role && (
+        <Field.ErrorText>{errors.role}</Field.ErrorText>
+    )}
 </Field.Root>
                         
 
