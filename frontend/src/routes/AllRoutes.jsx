@@ -16,11 +16,15 @@ import Profile from "@/pages/Profile";
 import FourOFour from "@/pages/FourOFour";
 import ProtectedRoute from "@/routes/ProtectedRoute";
 import OAuthSuccess from "@/pages/OAuthSuccess";
-import FourOFour from "@/pages/FourOFour";
-import ProtectedRoute from "@/routes/ProtectedRoute";
-import OAuthSuccess from "@/pages/OAuthSuccess";
 
+// pulls in Chart.js - only load it when someone actually visits /admin
+const AdminDashboard = lazy(() => import("@/pages/AdminDashboard"));
 
+const AdminFallback = () => (
+    <Center minH="40vh">
+        <Spinner size="lg" color="var(--gold)" />
+    </Center>
+);
 
 const AllRoutes = () => {
     return (
@@ -28,9 +32,10 @@ const AllRoutes = () => {
             <Route path="/" element={<Landing />} />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/oauth-success" element={<OAuthSuccess />} />
             <Route path="/browse" element={<BrowseSkills />} />
             <Route path="/skills/:id" element={<SkillDetails />} />
-            <Route path="/oauth-success" element={<OAuthSuccess />} />
+
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             <Route path="/skills/mine" element={<ProtectedRoute><MySkills /></ProtectedRoute>} />
             <Route path="/skills/new" element={<ProtectedRoute><SkillForm /></ProtectedRoute>} />
@@ -54,14 +59,5 @@ const AllRoutes = () => {
         </Routes>
     );
 };
-
-
-const AdminDashboard = lazy(() => import("@/pages/AdminDashboard"));
-
-const AdminFallback = () => (
-    <Center minH="40vh">
-        <Spinner size="lg" color="var(--gold)" />
-    </Center>
-);
 
 export default AllRoutes;

@@ -4,8 +4,15 @@ const userSchema = new mongoose.Schema(
     {
         fullName: { type: String, required: true },
         email: { type: String, required: true, unique: true, lowercase: true, trim: true },
-        password: { type: String, required: true },
-        phoneNumber: { type: Number, required: true },
+        password: {
+            type: String,
+            required: function () { return !this.googleId; },
+        },
+        phoneNumber: {
+            type: Number,
+            required: function () { return !this.googleId; },
+        },
+        googleId: { type: String, default: null },
         role: { type: [String], enum: ["helper", "seeker"], default: ["seeker"] },
         bio: { type: String, default: "" },
         location: { type: String, default: "" },

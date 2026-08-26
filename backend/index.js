@@ -1,8 +1,8 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-require("dotenv").config();
 const http = require("http");
+const session = require("express-session");
 const { connectDB } = require("./config/db");
 const { authRouter } = require("./routes/auth.route");
 const { skillRouter } = require("./routes/skill.route");
@@ -16,11 +16,21 @@ const paymentRouter = require("./routes/payment.routes");
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+app.use(
+    session({
+        secret: process.env.SESSION_SECRET,
+        resave: false,
+        saveUninitialized: false,
+        cookie: { maxAge: 5 * 60 * 1000 },
+    })
+);
+app.use(passport.initialize());
+
 app.use("/api/auth", authRouter);
 app.use("/api/skills", skillRouter);
 app.use("/api/admin", adminRouter);
-app.use("/api/bookings", require("./routes/booking.route").bookingRouter);
-app.use(passport.initialize());
+app.use("/api/bookings", bookingRouter);
 app.use("/api/ai", aiRouter);
 app.use("/api/payment", paymentRouter);
 

@@ -47,8 +47,8 @@ export const AuthProvider = ({ children }) => {
         const res = await getProfileApi();
         setUser(res.data.user);
         connectSocket(jwt);
+        return res.data.user;
     };
-
     const logout = () => {
         localStorage.removeItem("token");
         setToken(null);
