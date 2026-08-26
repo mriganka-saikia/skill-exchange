@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { Box, Button, Grid, HStack, Heading, Skeleton, Text, VStack } from "@chakra-ui/react";
 import { useAuth } from "@/context/AuthContext";
-import { getMySkillsApi } from "@/api/skills";
+import { getMySkillsApi } from "@/api/Skills";
 import { getMyBookingsApi, getIncomingBookingsApi } from "@/api/bookings";
 
 const StatCard = ({ label, value, to }) => (

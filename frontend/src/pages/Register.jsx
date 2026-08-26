@@ -108,8 +108,16 @@ const Register = () => {
 </Field.Root>
                         
 
-                    <Button type="submit" loading={loading} bg="var(--gold)" color="white" _hover={{ bg: "var(--gold-deep)" }} mt={2}>
+                                     <Button type="submit" loading={loading} bg="var(--gold)" color="white" _hover={{ bg: "var(--gold-deep)" }} mt={2}>
                         Create account
+                    </Button>
+                    <Button
+                        type="button"
+                        variant="outline"
+                        borderColor="var(--line)"
+                        onClick={() => (window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`)}
+                    >
+                        Continue with Google
                     </Button>
                 </VStack>
             </form>

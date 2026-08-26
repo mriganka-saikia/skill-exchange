@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Box, Badge, Button, Field, HStack, Heading, Input, Skeleton, Text, Textarea, VStack } from "@chakra-ui/react";
-import { getSkillByIdApi, getSkillReviewsApi, bookSkillApi } from "@/api/skills";
+import { getSkillByIdApi, getSkillReviewsApi, bookSkillApi } from "@/api/Skills";
 import { useAuth } from "@/context/AuthContext";
 import { toaster } from "@/components/ui/toaster";
 import StarRating from "@/components/StarRating";

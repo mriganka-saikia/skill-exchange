@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Box, Button, Field, Heading, Input, NativeSelect, Text, Textarea, VStack } from "@chakra-ui/react";
 import { CATEGORIES } from "@/components/FilterDrawer";
-import { createSkillApi, updateSkillApi, getSkillByIdApi } from "@/api/skills";
+import { createSkillApi, updateSkillApi, getSkillByIdApi } from "@/api/Skills";
 import { toaster } from "@/components/ui/toaster";
 import { generateDescriptionApi } from "@/api/ai";
 

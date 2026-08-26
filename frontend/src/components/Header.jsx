@@ -10,24 +10,24 @@ const Header = () => {
     const { user, logout } = useAuth();
     const navigate = useNavigate();
     useEffect(() => {
-    const socket = getSocket();
-    if (!socket) return;
+        const socket = getSocket();
+        if (!socket) return;
 
-    const onNewBooking = (data) => {
-        toaster.create({ title: "New booking request", description: data.skillTitle, type: "info" });
-    };
-    const onUpdated = (data) => {
-        toaster.create({ title: "Booking updated", description: `Status: ${data.status}`, type: "info" });
-    };
+        const onNewBooking = (data) => {
+            toaster.create({ title: "New booking request", description: data.skillTitle, type: "info" });
+        };
+        const onUpdated = (data) => {
+            toaster.create({ title: "Booking updated", description: `Status: ${data.status}`, type: "info" });
+        };
 
-    socket.on("booking:new", onNewBooking);
-    socket.on("booking:updated", onUpdated);
+        socket.on("booking:new", onNewBooking);
+        socket.on("booking:updated", onUpdated);
 
-    return () => {
-        socket.off("booking:new", onNewBooking);
-        socket.off("booking:updated", onUpdated);
-    };
-}, [user]);
+        return () => {
+            socket.off("booking:new", onNewBooking);
+            socket.off("booking:updated", onUpdated);
+        };
+    }, [user]);
     const handleLogout = () => {
         logout();
         navigate("/");
@@ -51,6 +51,12 @@ const Header = () => {
                         <>
                             <RouterLink to="/dashboard" style={{ textDecoration: "none" }}>
                                 <Text fontSize="sm" color="var(--ink-soft)">Dashboard</Text>
+                            </RouterLink>
+                            <RouterLink to="/bookings/mine" style={{ textDecoration: "none" }}>
+                                <Text fontSize="sm" color="var(--ink-soft)">My Bookings</Text>
+                            </RouterLink>
+                            <RouterLink to="/bookings/incoming" style={{ textDecoration: "none" }}>
+                                <Text fontSize="sm" color="var(--ink-soft)">Requests</Text>
                             </RouterLink>
                             {user.isAdmin && (
                                 <RouterLink to="/admin" style={{ textDecoration: "none" }}>

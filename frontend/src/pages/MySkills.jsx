@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { Badge, Box, Button, HStack, Heading, Skeleton, Text, VStack } from "@chakra-ui/react";
-import { getMySkillsApi, deleteSkillApi } from "@/api/skills";
+import { getMySkillsApi, deleteSkillApi } from "@/api/Skills";
 import { toaster } from "@/components/ui/toaster";
 
 const STATUS_COLOR = {
