@@ -11,14 +11,15 @@ const BrowseSkills = () => {
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-    const [filters, setFilters] = useState({ category: "", search: "" });
+        const [filters, setFilters] = useState({ category: "", search: "" });
+    const [paidFilter, setPaidFilter] = useState(""); // "", "true", "false"
     const [drawerOpen, setDrawerOpen] = useState(false);
 
     useEffect(() => {
         const load = async () => {
             setLoading(true);
             try {
-                const res = await getSkillsApi({ ...filters, page, limit: 9 });
+                const res = await getSkillsApi({ ...filters, paid: paidFilter || undefined, page, limit: 9 });
                 setSkills(res.data.skills);
                 setTotalPages(res.data.totalPages);
             } finally {
@@ -26,7 +27,7 @@ const BrowseSkills = () => {
             }
         };
         load();
-    }, [page, filters]);
+    }, [page, filters, paidFilter]);
 
     return (
         <Box className="app-main" py={10}>
@@ -38,6 +39,26 @@ const BrowseSkills = () => {
                 <Button variant="outline" borderColor="var(--line)" onClick={() => setDrawerOpen(true)}>
                     <LuSlidersHorizontal style={{ marginRight: 8 }} /> Filters
                 </Button>
+                       </HStack>
+
+            <HStack gap={2} mb={6}>
+                {[
+                    { label: "All", value: "" },
+                    { label: "Free & Swap", value: "false" },
+                    { label: "Paid", value: "true" },
+                ].map((tab) => (
+                    <Button
+                        key={tab.value}
+                        size="sm"
+                        variant={paidFilter === tab.value ? "solid" : "outline"}
+                        bg={paidFilter === tab.value ? "var(--gold)" : "transparent"}
+                        color={paidFilter === tab.value ? "white" : "inherit"}
+                        borderColor="var(--line)"
+                        onClick={() => { setPaidFilter(tab.value); setPage(1); }}
+                    >
+                        {tab.label}
+                    </Button>
+                ))}
             </HStack>
 
             {loading ? (

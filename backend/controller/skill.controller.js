@@ -2,10 +2,12 @@ const { skillModel } = require("../model/skill.model");
 const { reviewModel } = require("../model/review.model");
 
 const getSkills = async (req, res) => {
-    const { category, search, page = 1, limit = 9 } = req.query;
+    const { category, search, paid, page = 1, limit = 9 } = req.query;
 
     const filter = { status: "approved", isActive: true };
     if (category) filter.category = category;
+    if (paid === "true") filter.rateUnit = { $in: ["per-session", "per-hour"] };
+    if (paid === "false") filter.rateUnit = { $in: ["free", "swap"] };
     if (search) {
         filter.$or = [
             { title: { $regex: search, $options: "i" } },

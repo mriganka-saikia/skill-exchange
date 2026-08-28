@@ -1,6 +1,8 @@
 const { bookingModel } = require("../model/booking.model");
 const { skillModel } = require("../model/skill.model");
 const { getIO } = require("../config/socket");
+const razorpay = require("../config/razorpay");
+
 
 const createBooking = async (req, res) => {
     const { userId } = req.headers;
@@ -11,8 +13,11 @@ const createBooking = async (req, res) => {
         if (!skill || skill.status !== "approved" || !skill.isActive) {
             return res.status(404).send({ message: "This skill listing is not available for booking" });
         }
-        if (String(skill.helper) === String(userId)) {
+                if (String(skill.helper) === String(userId)) {
             return res.status(400).send({ message: "You cannot book your own listing" });
+        }
+        if (["per-session", "per-hour"].includes(skill.rateUnit) && skill.rateAmount > 0) {
+            return res.status(400).send({ message: "This is a paid skill — book it from the listing page to pay first" });
         }
 
         const booking = new bookingModel({
@@ -141,7 +146,21 @@ const updateBookingStatus = async (req, res) => {
             return res.status(403).send({ message: "You are not allowed to make this change" });
         }
 
-        booking.status = status;
+           booking.status = status;
+
+        if (status === "declined" && booking.paymentStatus === "paid" && booking.razorpayPaymentId) {
+            try {
+                await razorpay.payments.refund(booking.razorpayPaymentId, {
+                    amount: booking.amountPaid,
+                    speed: "normal",
+                    notes: { reason: "booking_declined", bookingId: String(booking._id) },
+                });
+                booking.paymentStatus = "refunded";
+            } catch (refundError) {
+                console.error("Refund failed:", refundError);
+            }
+        }
+
         await booking.save();
         const recipient = String(booking.seeker) === String(userId) ? booking.helper : booking.seeker;
         getIO().to(String(booking.seeker)).emit("bookings:refresh");

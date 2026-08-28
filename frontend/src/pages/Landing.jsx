@@ -24,7 +24,7 @@ const Landing = () => {
                         <Heading
                             as="h1"
                             fontFamily="var(--font-display)"
-                            fontSize={{ base: "4xl", md: "5xl" }}
+                            fontSize={{ base: "4xl", md: "5xl", xl: "6xl" }}
                             lineHeight="1.1"
                             color="var(--ink)"
                             mb={4}

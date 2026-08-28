@@ -5,6 +5,7 @@ import { getSkillByIdApi, getSkillReviewsApi, bookSkillApi } from "@/api/Skills"
 import { useAuth } from "@/context/AuthContext";
 import { toaster } from "@/components/ui/toaster";
 import StarRating from "@/components/StarRating";
+import Payment from "@/components/Payment";
 
 const SkillDetails = () => {
     const { id } = useParams();
@@ -62,6 +63,7 @@ const SkillDetails = () => {
     if (!skill) return null;
 
     const isOwnListing = user && skill.helper?._id === user._id;
+    const isPaidSkill = ["per-session", "per-hour"].includes(skill.rateUnit) && skill.rateAmount > 0;
 
     return (
         <Box className="app-main" py={10}>
@@ -133,9 +135,18 @@ const SkillDetails = () => {
                                                 onChange={(e) => setBooking({ ...booking, message: e.target.value })}
                                             />
                                         </Field.Root>
-                                        <Button type="submit" loading={submitting} bg="var(--gold)" color="white" _hover={{ bg: "var(--gold-deep)" }}>
-                                            Request booking
-                                        </Button>
+                                                                                {isPaidSkill ? (
+                                            <Payment
+                                                skillId={skill._id}
+                                                amountLabel={`₹${skill.rateAmount}`}
+                                                bookingDraft={{ message: booking.message, scheduledDate: booking.scheduledDate }}
+                                                onSuccess={() => navigate("/bookings/mine")}
+                                            />
+                                        ) : (
+                                            <Button type="submit" loading={submitting} bg="var(--gold)" color="white" _hover={{ bg: "var(--gold-deep)" }}>
+                                                Request booking
+                                            </Button>
+                                        )}
                                     </VStack>
                                 </form>
                             )}
