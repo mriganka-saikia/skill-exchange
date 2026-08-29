@@ -28,7 +28,7 @@ project/
 
 ---
 
-## 3. ⚠️ Things You Need to Fill In
+## 3. Things You Need to Fill In
 
 There is no `.env` file included in this export — you must create one for the backend (and optionally one for the frontend). Nothing will run without this.
 
