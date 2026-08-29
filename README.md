@@ -1,4 +1,4 @@
-x Skill Exchange
+# Skill Exchange
 
 A full-stack platform where users can list skills they can teach ("helpers"), browse and book sessions with others ("seekers"), pay for paid listings via Razorpay, chat in real time, leave reviews, and get AI-generated skill descriptions via Gemini. Includes an admin dashboard for moderating listings.
 
@@ -28,7 +28,7 @@ project/
 
 ---
 
-## 3. Things You Need to Fill In
+## 3. ⚠️ Things You Need to Fill In
 
 There is no `.env` file included in this export — you must create one for the backend (and optionally one for the frontend). Nothing will run without this.
 
